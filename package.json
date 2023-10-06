@@ -1,0 +1,43 @@
+{
+  "name": "basedserver",
+  "version": "1.0.0",
+  "description": "A base for my servers.",
+  "main": "bin/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "npm run build && node bin/index.js",
+    "dev": "ts-node Source/index",
+    "dev:watch": "nodemon -x ts-node Source/index",
+    "check": "tsc --noEmit",
+    "lint": "prettier --check ./Source && eslint ./Source --ext .ts",
+    "format": "prettier --write ./Source && eslint ./Source --ext .ts --fix"
+  },
+  "nodemonConfig": {
+    "ext": "*.ts,*.json,*.env",
+    "ignore": [
+      "bin/**",
+      "thunder_tests/**"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/McMistrzYT/BasedServer.git"
+  },
+  "author": "McMistrzYT",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/McMistrzYT/BasedServer/issues"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.18",
+    "@types/node": "^20.6.3",
+    "tslib": "^2.6.2",
+    "typescript": "^5.2.2"
+  },
+  "dependencies": {
+    "colorette": "^2.0.20",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2"
+  },
+  "homepage": "https://github.com/McMistrzYT/BasedServer#readme"
+}
