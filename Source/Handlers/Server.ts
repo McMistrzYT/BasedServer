@@ -1,8 +1,8 @@
 import e from "express"
 import fs from "fs";
-import { BODY_SIZE_LIMIT, PORT, PROJECT_NAME } from "../Modules/Constants";
+import { BODY_SIZE_LIMIT, IS_DEBUG, PORT, PROJECT_NAME } from "../Modules/Constants";
 import { Msg } from "../Modules/Logger";
-import { italic, magenta } from "colorette";
+import { italic, magenta, red } from "colorette";
 import path from "path";
 
 export const App = e()
@@ -25,7 +25,7 @@ async function Initialize() {
         Msg(`Loaded route ${italic(File)}!`);
     }
     
-    App.listen(PORT, () => Msg(`${magenta(PROJECT_NAME)} now up on port ${magenta(PORT)}`));
+    App.listen(PORT, () => Msg(`${magenta(PROJECT_NAME)} now up on port ${magenta(PORT)} ${(IS_DEBUG ? red("(debug environment)") : "")}`));
 }
 
 Initialize();
