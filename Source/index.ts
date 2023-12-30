@@ -4,7 +4,7 @@ config();
 import "./Handlers/Server";
 
 /*
-    Welcome to Mc's BasedServer template!
+    Welcome to Mc's BasedServer template! (v1.1 - 30.12.2023 update)
     This is the exact same base I use for projects like Dispriv, Birdnest, GDTS and more.
 
     Here's a quick overview:
