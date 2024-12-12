@@ -26,7 +26,7 @@ export function ValidateQuery(schema: j.Schema) {
 export function ValidateParams(schema: j.Schema) {
     return async (req: Request, res: Response, next: NextFunction) => {
         try {
-            req.query = await schema.validateAsync(req.params);
+            req.params = await schema.validateAsync(req.params);
             next();
         } catch (err) {
             res.status(400).json(err)
