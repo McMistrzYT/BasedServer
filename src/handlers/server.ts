@@ -1,5 +1,5 @@
 import e, { NextFunction, Request, Response } from "express"
-import fs from "fs";
+import fs from "fs/promises";
 import { BODY_SIZE_LIMIT, ENDPOINT_AUTHENTICATION_ENABLED, ENDPOINT_AUTH_HEADER, ENDPOINT_AUTH_VALUE, IS_DEBUG, PORT, PROJECT_NAME, SERVER_URL } from "../modules/constants";
 import { msg, warn } from "../modules/logger";
 import { italic, magenta, red, yellow } from "colorette";
@@ -15,9 +15,9 @@ export const app = e()
     .use(cors({ origin: "*" }));
 
 async function init() {
-    const files = fs
+    const files = (await fs
         // this next line is a disgrace to the human race
-        .readdirSync(path.join(".", (Symbol.for("ts-node.register.instance") in process ? "src" : "bin"), "routes"))
+        .readdir(path.join(".", (Symbol.for("ts-node.register.instance") in process ? "src" : "bin"), "routes")))
         .filter(f => f.endsWith(".js") || f.endsWith(".ts"));
 
     if (ENDPOINT_AUTHENTICATION_ENABLED)
