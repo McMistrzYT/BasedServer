@@ -1,6 +1,6 @@
 import express from "express";
-import { ApiError } from "./Errors";
-import { ServiceType } from "./Service";
+import { ApiError } from "./errors";
+import { ServiceType } from "./service";
 
 declare global {
     namespace Express {

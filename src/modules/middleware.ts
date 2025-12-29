@@ -1,7 +1,7 @@
 import j from "joi";
 import { NextFunction, Request, Response } from "express";
 
-export function ValidateBody(schema: j.Schema) {
+export function validateBody(schema: j.Schema) {
     return async (req: Request, res: Response, next: NextFunction) => {
         try {
             req.body = await schema.validateAsync(req.body);
@@ -12,7 +12,7 @@ export function ValidateBody(schema: j.Schema) {
     }
 }
 
-export function ValidateQuery(schema: j.Schema) {
+export function validateQuery(schema: j.Schema) {
     return async (req: Request, res: Response, next: NextFunction) => {
         try {
             req.query = await schema.validateAsync(req.query);
@@ -23,7 +23,7 @@ export function ValidateQuery(schema: j.Schema) {
     }
 }
 
-export function ValidateParams(schema: j.Schema) {
+export function validateParams(schema: j.Schema) {
     return async (req: Request, res: Response, next: NextFunction) => {
         try {
             req.params = await schema.validateAsync(req.params);

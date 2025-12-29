@@ -6,11 +6,11 @@
   "scripts": {
     "build": "tsc",
     "start": "npm run build && node bin/index.js",
-    "dev": "ts-node Source/index",
-    "dev:watch": "nodemon -x ts-node Source/index",
+    "dev": "ts-node src/index.ts",
+    "dev:watch": "nodemon -x \"ts-node src/index.ts\"",
     "check": "tsc --noEmit",
-    "lint": "prettier --check ./Source && eslint ./Source --ext .ts",
-    "format": "prettier --write ./Source && eslint ./Source --ext .ts --fix"
+    "lint": "prettier --check ./src && eslint ./src --ext .ts",
+    "format": "prettier --write ./src && eslint ./src --ext .ts --fix"
   },
   "nodemonConfig": {
     "ext": "*.ts,*.json,*.env",

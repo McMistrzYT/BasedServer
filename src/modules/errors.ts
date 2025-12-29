@@ -1,4 +1,4 @@
-import { ENVIRONMENT } from "./Constants";
+import { ENVIRONMENT } from "./constants";
 
 export type ApiErrorNamespace =
     "com.mcthedev.s.public." |
@@ -24,14 +24,14 @@ export class ApiError {
         this.message = message;
     }
 
-    package(...Vars: string[]) {
+    package(...vars: string[]) {
         return {
             errorCode: this.namespace + this.details,
             errorMessage: this.message.replace(/:(\d+)/g, (match, tagIndex) => {
                 const i = parseInt(tagIndex);
-                return Vars[i] !== undefined ? Vars[i].toString() : match;
+                return vars[i] !== undefined ? vars[i].toString() : match;
             }),
-            messageVars: Vars,
+            messageVars: vars,
             numericErrorCode: this.code,
             originatingService: this.service,
             intent: this.intent
