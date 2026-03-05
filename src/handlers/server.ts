@@ -1,11 +1,13 @@
-import e, { NextFunction, Request, Response } from "express"
-import fs from "fs/promises";
-import { BODY_SIZE_LIMIT, ENDPOINT_AUTHENTICATION_ENABLED, ENDPOINT_AUTH_HEADER, ENDPOINT_AUTH_VALUE, IS_DEBUG, PORT, PROJECT_NAME, SERVER_URL } from "../modules/constants";
-import { msg, warn } from "../modules/logger";
-import { italic, magenta, red, yellow } from "colorette";
-import path from "path";
 import cors from "cors";
-import { E_Lockdown, E_NotFound, E_ServerError } from "../modules/errors";
+import path from "path";
+import fs from "fs/promises";
+import e from "express"
+import type { NextFunction, Request, Response } from "express";
+import { italic, magenta, red, yellow } from "colorette";
+
+import { BODY_SIZE_LIMIT, ENDPOINT_AUTHENTICATION_ENABLED, ENDPOINT_AUTH_HEADER, ENDPOINT_AUTH_VALUE, IS_DEBUG, PORT, PROJECT_NAME, SERVER_URL } from "@/modules/constants";
+import { msg, warn } from "@/modules/logger";
+import { E_Lockdown, E_NotFound, E_ServerError } from "@/modules/errors";
 
 export const app = e()
     .disable("etag")
@@ -14,41 +16,36 @@ export const app = e()
     .use(e.urlencoded({ limit: BODY_SIZE_LIMIT, extended: false }))
     .use(cors({ origin: "*" }));
 
-async function init() {
-    const files = (await fs
-        // this next line is a disgrace to the human race
-        .readdir(path.join(".", (Symbol.for("ts-node.register.instance") in process ? "src" : "bin"), "routes")))
-        .filter(f => f.endsWith(".js") || f.endsWith(".ts"));
+const files = (await fs
+    .readdir(path.join(".", "src", "routes")))
+    .filter(f => f.endsWith(".js") || f.endsWith(".ts"));
 
-    if (ENDPOINT_AUTHENTICATION_ENABLED)
-        warn(`Endpoint authentication requirement is enabled! You will not be able to connect to the server without the ${yellow(ENDPOINT_AUTH_HEADER as string)} header.`)
-    
-    app.use((req, res, next) => {
-        if (ENDPOINT_AUTHENTICATION_ENABLED && req.header(ENDPOINT_AUTH_HEADER as string) !== ENDPOINT_AUTH_VALUE)
-            return res.error(E_Lockdown, SERVER_URL);
+if (ENDPOINT_AUTHENTICATION_ENABLED)
+    warn(`Endpoint authentication requirement is enabled! You will not be able to connect to the server without the ${yellow(ENDPOINT_AUTH_HEADER as string)} header.`)
 
-        next();
-    })
+app.use((req, res, next) => {
+    if (ENDPOINT_AUTHENTICATION_ENABLED && req.header(ENDPOINT_AUTH_HEADER as string) !== ENDPOINT_AUTH_VALUE)
+        return res.error(E_Lockdown, SERVER_URL);
 
-    for (const file of files) {
-        const contents = await import(path.join("..", "routes", file));
-        if (!contents.default) continue;
-        if (!contents.default.app) continue;
+    next();
+})
 
-        const entryPoint = contents.default.entryPoint || "/";
-        app.use(entryPoint, contents.default.app);
+for (const file of files) {
+    const contents = await import(path.join("..", "routes", file));
+    if (!contents.default) continue;
+    if (!contents.default.app) continue;
 
-        msg(`Loaded route ${italic(file)} at ${italic(entryPoint)}!`);
-    }
+    const entryPoint = contents.default.entryPoint || "/";
+    app.use(entryPoint, contents.default.app);
 
-    app.use((req, res) => res.error(E_NotFound, req.path));
-
-    app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-        console.error(err);
-        res.error(E_ServerError);
-    });
-    
-    app.listen(PORT, () => msg(`${magenta(PROJECT_NAME)} now up on port ${magenta(PORT)} ${(IS_DEBUG ? red("(debug environment)") : "")}`));
+    msg(`Loaded route ${italic(file)} at ${italic(entryPoint)}!`);
 }
 
-init();
+app.use((req, res) => res.error(E_NotFound, req.path));
+
+app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+    console.error(err);
+    res.error(E_ServerError);
+});
+
+app.listen(PORT, () => msg(`${magenta(PROJECT_NAME)} now up on port ${magenta(PORT)} ${(IS_DEBUG ? red("(debug environment)") : "")}`));

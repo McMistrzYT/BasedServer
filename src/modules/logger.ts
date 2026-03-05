@@ -1,5 +1,5 @@
 import { green, gray, red, magenta, yellow } from "colorette";
-import { IS_DEBUG, PROJECT_NAME } from "./constants";
+import { IS_DEBUG, PROJECT_NAME } from "@/modules/constants";
 
 export function msg(content: string, prefix = PROJECT_NAME) {
     console.log(`${gray(new Date().toISOString())} [${green(prefix)}] ${content}`);

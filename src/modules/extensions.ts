@@ -1,6 +1,6 @@
 import express from "express";
-import { ApiError } from "./errors";
-import { ServiceType } from "./service";
+import { ApiError } from "@/modules/errors";
+import { ServiceType } from "@/modules/service";
 
 declare global {
     namespace Express {

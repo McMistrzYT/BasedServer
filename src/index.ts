@@ -1,11 +1,8 @@
-import { config } from "dotenv";
-config();
-
-import "./modules/extensions";
-import "./handlers/server";
+import "@/modules/extensions";
+import "@/handlers/server";
 
 /*
-    Welcome to Mc's BasedServer template! (v1.3 - 29.12.2025)
+    Welcome to Mc's BasedServer (bun-based) template! (v1.4 - 5.03.2026)
     This is the exact same base I use for projects like Dispriv, Birdnest, GDTS and more.
 
     Here's a quick overview:

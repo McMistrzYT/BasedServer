@@ -1,4 +1,4 @@
-import { ENVIRONMENT } from "./constants";
+import { ENVIRONMENT } from "@/modules/constants";
 
 export type ApiErrorNamespace =
     "com.mcthedev.s.public." |
@@ -22,6 +22,7 @@ export class ApiError {
         this.service = service;
         this.intent = ENVIRONMENT;
         this.message = message;
+        this.arguments = [];
     }
 
     package(...vars: string[]) {

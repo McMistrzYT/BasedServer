@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { requireService, ServiceType } from "../modules/service";
+import { requireService, ServiceType } from "@/modules/service";
 
 const r = Router();
 

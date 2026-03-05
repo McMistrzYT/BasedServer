@@ -1,5 +1,5 @@
 import j from "joi";
-import { NextFunction, Request, Response } from "express";
+import type { NextFunction, Request, Response } from "express";
 
 export function validateBody(schema: j.Schema) {
     return async (req: Request, res: Response, next: NextFunction) => {

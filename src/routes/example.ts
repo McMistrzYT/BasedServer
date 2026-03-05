@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { PROJECT_NAME, PROJECT_VERSION } from "../modules/constants";
+import { PROJECT_NAME, PROJECT_VERSION } from "@/modules/constants";
 
 const r = Router();
 
