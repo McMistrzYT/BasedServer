@@ -5,7 +5,7 @@ import e from "express"
 import type { NextFunction, Request, Response } from "express";
 import { italic, magenta, red, yellow } from "colorette";
 
-import { BODY_SIZE_LIMIT, ENDPOINT_AUTHENTICATION_ENABLED, ENDPOINT_AUTH_HEADER, ENDPOINT_AUTH_VALUE, IS_DEBUG, PORT, PROJECT_NAME, SERVER_URL } from "@/modules/constants";
+import { BODY_SIZE_LIMIT, ENDPOINT_AUTHENTICATION_ENABLED, ENDPOINT_AUTH_HEADER, ENDPOINT_AUTH_VALUE, IS_DEBUG, NOT_FOUND_SERVE_FILE, PORT, PROJECT_NAME, SERVER_URL, SERVE_PATH } from "@/modules/constants";
 import { msg, warn } from "@/modules/logger";
 import { E_Lockdown, E_NotFound, E_ServerError } from "@/modules/errors";
 
@@ -41,7 +41,10 @@ for (const file of files) {
     msg(`Loaded route ${italic(file)} at ${italic(entryPoint)}!`);
 }
 
-app.use((req, res) => res.error(E_NotFound, req.path));
+app.use("/api", (req, res) => res.error(E_NotFound, req.path));
+
+app.use(e.static(SERVE_PATH, { dotfiles: "deny" }));
+app.use(async (_, res) => res.send((await fs.readFile(NOT_FOUND_SERVE_FILE)).toString()));
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
     console.error(err);

@@ -15,3 +15,7 @@ export const FULL_SERVER_ROOT = `http${IS_HTTPS ? "s" : ""}://${SERVER_URL}${(SH
 export const IS_NGINX = ["yes", "true"].includes((process.env.BASEDSERVER_IS_NGINX ?? "false").toLowerCase());
 export const ENVIRONMENT = process.env.BASEDSERVER_ENVIRONMENT ?? "develop";
 export const IS_DEBUG = ENVIRONMENT.toLowerCase().includes("develop") || ENVIRONMENT.toLowerCase().includes("stage"); // IS_DEBUG can be used to enable test endpoints, unsafe code and more.
+
+// StaticServer
+export const SERVE_PATH = process.env.STATICSERVER_SERVE_PATH ?? "/data";
+export const NOT_FOUND_SERVE_FILE = process.env.STATICSERVER_NOT_FOUND_SERVE_FILE ?? "/data/index.html";
